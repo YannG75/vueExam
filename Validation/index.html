@@ -1,0 +1,65 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>validation</title>
+</head>
+<body>
+<div id="app">
+    <div class="container w-50">
+        <form id="form">
+            <div class="form-group" >
+                <label for="exampleInputEmail1">Email address</label>
+                <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input type="password" name="password" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="form-group"><span v-if="type !== null" class="text-danger" :class="{success:type}">{{ msg }}</span></div>
+
+            <button type="submit" @click.prevent="login" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+</div>
+
+
+</body>
+<style>
+    .success {
+        color: green !important;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            msg:'',
+            type: false
+        },
+        methods: {
+            login() {
+                let form = document.querySelector('#form')
+                console.log(form)
+                fetch('http://localhost/front/Validation/login.php', {
+                    method: 'post',
+                    body: new FormData(form)
+                }).then(res => {
+                    return res.json();
+                }).then(data => {
+                        this.msg = data.message
+                        this.type = data.type
+                });
+
+            }
+        }
+    })
+</script>
+</html>
